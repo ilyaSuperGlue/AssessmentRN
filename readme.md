@@ -4,6 +4,8 @@
 
 open folder frontend
 
+`cd frontend`
+
 install the library
 
 `bun install`
