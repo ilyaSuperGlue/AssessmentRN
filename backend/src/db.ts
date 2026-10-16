@@ -26,7 +26,7 @@ export function migrate() {
       transfer_date TEXT NOT NULL,
       recipient_name TEXT NOT NULL,
       transfer_name TEXT NOT NULL CHECK (transfer_name IN ('Salary Payment', 'Invoice Payment', 'Refund', 'Bonus Payment')),
-      amount REAL NOT NULL CHECK (amount >= 0),
+      amount REAL NOT NULL,
       note TEXT
     );
     CREATE INDEX IF NOT EXISTS idx_transactions_transfer_date
@@ -47,12 +47,14 @@ export function migrate() {
         from: "2024-01-01T00:00:00.000Z",
         to: "2024-12-31T23:59:59.999Z",
       });
+      const transferName = faker.helpers.arrayElement(transferNames);
+      const amount = Number(faker.finance.amount({ min: 10, max: 10000, dec: 2 }));
       insert.run(
         `${faker.string.alphanumeric({ length: 6, casing: "upper" })}${String(index).padStart(3, "0")}`,
         transferDate.toISOString(),
         faker.person.fullName(),
-        faker.helpers.arrayElement(transferNames),
-        Number(faker.finance.amount({ min: 10, max: 10000, dec: 2 })),
+        transferName,
+        transferName === "Refund" ? -amount : amount,
         faker.helpers.maybe(() => faker.lorem.sentence({ min: 3, max: 8 })) ?? null,
       );
     }

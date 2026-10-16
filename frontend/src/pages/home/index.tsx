@@ -1,4 +1,11 @@
-import { FlatList, Image, Pressable, Text, View } from 'react-native';
+import {
+  FlatList,
+  Image,
+  Pressable,
+  RefreshControl,
+  Text,
+  View,
+} from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import useGetcolor from '../../lib/useGetColor';
 import HomeHeader from './components/HomeHeader';
@@ -9,48 +16,12 @@ import { useCallback } from 'react';
 import images from '../../assets/images';
 import { useNavigation } from '@react-navigation/native';
 import { EnumScreen } from '../../navigation/interface/rootstack';
-
-const data = [
-  {
-    refId: '123ABC',
-    transferDate: '2024-10-15T12:34:56Z',
-    recipientName: 'John Doe',
-    transferName: 'Salary Payment',
-    amount: 1500.0,
-  },
-  {
-    refId: '456DEF',
-    transferDate: '2024-09-21T09:12:45Z',
-    recipientName: 'Jane Smith',
-    transferName: 'Invoice Payment',
-    amount: 2300.0,
-  },
-  {
-    refId: '789GHI',
-    transferDate: '2024-10-05T16:18:30Z',
-    recipientName: 'Robert Brown',
-    transferName: 'Refund',
-    amount: -500.0,
-  },
-  {
-    refId: '101JKL',
-    transferDate: '2024-08-30T11:47:22Z',
-    recipientName: 'Emily Davis',
-    transferName: 'Bonus Payment',
-    amount: 1200.0,
-  },
-  {
-    refId: '123ABCs',
-    transferDate: '2024-10-15T12:34:56Z',
-    recipientName: 'John Doe',
-    transferName: 'Salary Payment',
-    amount: -1500.0,
-  },
-];
+import useGetRecentTransaction from '../../network/useGetRecentTransaction';
 
 const Home = () => {
   const { colors } = useGetcolor();
   const navigation = useNavigation();
+  const { data, loading, fetchApi } = useGetRecentTransaction();
 
   const ListHeaderComponent = useCallback(() => {
     return (
@@ -99,8 +70,11 @@ const Home = () => {
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <HomeHeader />
       <FlatList
+        refreshControl={
+          <RefreshControl refreshing={loading} onRefresh={fetchApi} />
+        }
         ListHeaderComponent={ListHeaderComponent}
-        data={data}
+        data={data?.data}
         renderItem={({ item, index }) => (
           <HomeRecentItem
             {...item}

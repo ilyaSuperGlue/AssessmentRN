@@ -9,6 +9,8 @@ import moment from 'moment';
 import { DateEnum } from '../../constant/date';
 import { useRoute } from '@react-navigation/native';
 import { HomeRecentItemProp } from '../home/components/HomeRecentItem';
+import { useSettingStore } from '../../store/useSettingStore';
+import maskMoney from '../../lib/maskMoney';
 
 const TransactionDetail = () => {
   const params = useRoute().params as {
@@ -16,6 +18,7 @@ const TransactionDetail = () => {
   };
   const data = params.transaction;
   const { colors } = useGetcolor();
+  const { visible } = useSettingStore();
   return (
     <View style={[styles.container, { backgroundColor: colors.background }]}>
       <Header title="Transaction detail" />
@@ -40,7 +43,7 @@ const TransactionDetail = () => {
               },
             ]}
           >
-            {formatMoney(data.amount)}
+            {maskMoney(formatMoney(data.amount), visible)}
           </Text>
           <View style={styles.mt(5)} />
           <TrxLabelValue label="Ref Id" value={data.refId} />
@@ -49,7 +52,7 @@ const TransactionDetail = () => {
             label="Date and time"
             value={moment(data.transferDate).format(DateEnum.FULL)}
           />
-          <TrxLabelValue label="Note" value={'-'} />
+          <TrxLabelValue label="Note" value={data.note ?? 'N/A'} />
         </View>
       </ScrollView>
       <View style={styles.spacer}>

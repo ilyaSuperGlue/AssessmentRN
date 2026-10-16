@@ -10,16 +10,12 @@ import { DateEnum } from '../../../constant/date';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSettingStore } from '../../../store/useSettingStore';
 import maskMoney from '../../../lib/maskMoney';
+import { Transaction } from '../../../network/interface/TransactionListResponse';
 
-export interface HomeRecentItemProp {
-  refId: string;
-  transferDate: string;
-  recipientName: string;
-  transferName: string;
-  amount: number;
-  index: number;
+export interface HomeRecentItemProp extends Transaction {
   isFull: boolean;
   onPress?: () => void;
+  index: number;
 }
 
 const HomeRecentItem = ({
@@ -29,6 +25,7 @@ const HomeRecentItem = ({
   index,
   isFull,
   onPress,
+  recipientName,
 }: HomeRecentItemProp) => {
   const { colors } = useGetcolor();
   const { visible } = useSettingStore();
@@ -101,18 +98,30 @@ const HomeRecentItem = ({
             )}
           </Text>
         </View>
-
-        <Text
-          style={[
-            styles.txtMoney,
-            {
-              color: icon.isPositive ? colors.foreground : colors.danger,
-            },
-          ]}
+        <View
+          style={{
+            flex: 1,
+            justifyContent: 'flex-end',
+            alignItems: 'flex-end',
+          }}
         >
-          {icon.isPositive ? '' : '-'} RM{' '}
-          {maskMoney(formatMoney(Math.abs(amount)), visible)}
-        </Text>
+          <Text
+            style={[
+              styles.txtMoney,
+              {
+                color: icon.isPositive ? colors.foreground : colors.danger,
+              },
+            ]}
+          >
+            {icon.isPositive ? '' : '-'} RM{' '}
+            {maskMoney(formatMoney(Math.abs(amount)), visible)}
+          </Text>
+          {isFull && (
+            <Text style={{ fontSize: 12, color: colors.foreground + 'aa' }}>
+              {recipientName}
+            </Text>
+          )}
+        </View>
       </Animated.View>
     </Pressable>
   );
