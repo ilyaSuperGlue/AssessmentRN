@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      PORT: 3000
+      DATABASE_URL: /app/data/assessment.sqlite
+    volumes:
+      - sqlite-data:/app/data
+
+volumes:
+  sqlite-data:

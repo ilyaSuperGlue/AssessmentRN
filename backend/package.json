@@ -1,0 +1,22 @@
+{
+  "name": "backend",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "bun --watch index.ts",
+    "start": "bun run index.ts",
+    "migrate": "bun run scripts/migrate.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^9.9.0",
+    "elysia": "^1.4.17"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^7"
+  }
+}
