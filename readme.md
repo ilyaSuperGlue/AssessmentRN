@@ -2,6 +2,8 @@
 
 ### how to run
 
+open folder frontend
+
 install the library
 
 `bun install`
