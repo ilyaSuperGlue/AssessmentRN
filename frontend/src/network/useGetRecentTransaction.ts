@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { local_url, transaction_service } from '../constant/network';
+import { host_url, transaction_service } from '../constant/network';
 import { TransactionListResponse } from './interface/TransactionListResponse';
 
 const useGetRecentTransaction = () => {
@@ -7,7 +7,7 @@ const useGetRecentTransaction = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchApi = useCallback(async () => {
-    const url = local_url + transaction_service;
+    const url = host_url + transaction_service;
     try {
       setLoading(true);
       const res = await fetch(`${url}?page=1&perPage=6`);

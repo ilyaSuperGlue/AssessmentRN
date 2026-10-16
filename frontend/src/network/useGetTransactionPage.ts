@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { local_url, transaction_service } from '../constant/network';
+import { host_url, transaction_service } from '../constant/network';
 import { TransactionListResponse } from './interface/TransactionListResponse';
 import { useTransactionStore } from '../store/useTransactionStore';
 
@@ -17,7 +17,7 @@ const useGetTransactionPage = ({
   const { setMaxPage, setPageData } = useTransactionStore();
 
   const fetchApi = useCallback(async () => {
-    const url = local_url + transaction_service;
+    const url = host_url + transaction_service;
     try {
       setLoading(true);
       const res = await fetch(
